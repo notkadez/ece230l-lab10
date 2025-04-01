@@ -5,10 +5,19 @@ module t_flipflop(T, clk, Q, Qn);
         Q = 0;
         Qn = 1;
     end
-    always @(posedge clk) begin
-        if (T) begin
-            Q <= ~Q;
-            Qn <= ~Qn;
-        end
+
+    wire q_tmp, qn_tmp;
+
+    jk_flipflop jkff(
+        .J(T),
+        .K(T),
+        .clk(clk),
+        .Q(q_tmp),
+        .Qn(qn_tmp)
+    );
+    
+    always @(q_tmp, qn_tmp) begin
+        Q <= q_tmp;
+        Qn <= qn_tmp;
     end
 endmodule
